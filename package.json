@@ -9,6 +9,7 @@
     "cnlab": "bin/cn-lab-programs-exam.js"
   },
   "files": ["bin/", "data/", "programs/", "README.md", "LICENSE"],
+  "scripts": {"test": "node test/smoke.js"},
   "engines": {"node": ">=18"},
   "keywords": ["computer-networks", "cn-lab", "practical-exam", "python", "java", "cli"],
   "repository": {
