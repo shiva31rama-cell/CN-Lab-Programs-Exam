@@ -198,9 +198,11 @@ async function main() {
     while (true) {
       const language = await chooseLanguage();
       if (!language) break;
-      const item = await chooseExperiment();
-      if (!item) continue;
-      await itemMenu(item, language);
+      while (true) {
+        const item = await chooseExperiment();
+        if (!item) break;
+        await itemMenu(item, language);
+      }
     }
   } finally {
     rl.close();
