@@ -35,6 +35,11 @@ jobs:
       - name: Check Python syntax
         run: python -m compileall -q programs/python
 
+      - name: Check npm package contents and size
+        run: |
+          npm pack --dry-run --json > "$RUNNER_TEMP/npm-pack.json"
+          node -e "const p=require(process.argv[1])[0]; console.log('npm package: '+p.filename); console.log('unpacked size: '+p.unpackedSize+' bytes'); console.log('compressed size: '+p.size+' bytes'); if (p.size > 100000) process.exit(1);" "$RUNNER_TEMP/npm-pack.json"
+
       - name: Compile Java practicals
         run: |
           mkdir -p "$RUNNER_TEMP/cn-lab-classes"
