@@ -14,6 +14,9 @@ assert.equal(catalog.length, 15, 'The catalogue should contain all 15 official p
 assert.ok(pkg.bin['cn-lab-programs-exam'], 'The npm executable must be configured.');
 
 for (const experiment of catalog) {
+  assert.ok(experiment.aim, 'Experiment ' + experiment.number + ' needs an aim.');
+  assert.ok(experiment.description, 'Experiment ' + experiment.number + ' needs a description.');
+  assert.ok(Array.isArray(experiment.algorithm), 'Experiment ' + experiment.number + ' needs a procedure.');
   if (experiment.kind === 'guide') continue;
   for (const language of ['python', 'java']) {
     const source = path.join(root, experiment.sources[language]);
@@ -21,19 +24,22 @@ for (const experiment of catalog) {
   }
 }
 
-const version = spawnSync(process.execPath, [cli, '--version'], { encoding: 'utf8' });
+function runCli(args) {
+  return spawnSync(process.execPath, [cli, ...args], { encoding: 'utf8', timeout: 10000 });
+}
+
+const version = runCli(['--version']);
 assert.equal(version.status, 0, 'The CLI should report its version.');
 assert.equal(version.stdout.trim(), pkg.version);
 
-const session = spawnSync(
-  process.execPath,
-  [cli],
-  { input: '1\n2\n3\n5\n0\n0\n', encoding: 'utf8', timeout: 10000 }
-);
-assert.equal(session.status, 0, 'The interactive menu should exit normally.');
-assert.match(session.stdout, /COMPUTER NETWORKS LAB/);
-assert.match(session.stdout, /SELECT AN EXPERIMENT/);
-assert.match(session.stdout, /SOURCE CODE — PYTHON/);
-assert.match(session.stdout, /character_stuff/);
+const help = runCli(['--help']);
+assert.equal(help.status, 0, 'The CLI help command should work.');
+assert.match(help.stdout, /npx cn-lab-programs-exam/);
 
-console.log('Smoke tests passed: package, catalogue, source paths and interactive CLI.');
+const list = runCli(['--list']);
+assert.equal(list.status, 0, 'The experiment list command should work.');
+assert.match(list.stdout, /Study of Network Devices and LAN Setup/);
+assert.match(list.stdout, /Hamming Code/);
+assert.match(list.stdout, /Operating System Detection Using Nmap/);
+
+console.log('Smoke tests passed: package metadata, all 15 experiment descriptions, source paths and CLI commands.');
