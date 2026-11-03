@@ -2,6 +2,32 @@
 
 An interactive terminal menu for Computer Networks lab practicals. Select Python or Java, choose an experiment, read its aim and description, view the algorithm, display the source code, or run the program.
 
+## Fast installation for slow or unreliable internet
+
+This package is deliberately dependency-free: it uses only Node.js built-in modules. The npm package contains the menu, experiment descriptions and the Python/Java source files, so it does not need to download program code when you select an experiment.
+
+**Best option for a laboratory with slow internet: install once before the practical exam.**
+
+    npm install --global --no-audit --no-fund --prefer-offline cn-lab-programs-exam
+
+After it is installed, start it with either command:
+
+    cnlab
+
+or
+
+    cn-lab-programs-exam
+
+The menu and bundled experiment files work without an internet connection after installation. Python 3 and/or a Java JDK must already be installed to run programs in those languages. Wireshark and Nmap are separate system tools for their respective practicals.
+
+If you prefer not to install globally, the first npx launch downloads the package:
+
+    npx --yes --no-audit --no-fund --prefer-offline cn-lab-programs-exam
+
+That first launch needs internet. Later launches can reuse npm's local cache, but a global installation is more predictable in an exam laboratory.
+
+For several lab computers, install the package on each machine while the internet is available. Do not rely on a first-time npx download during the examination.
+
 ## Run after npm publication
 
     npx cn-lab-programs-exam
