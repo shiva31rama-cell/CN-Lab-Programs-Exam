@@ -1,20 +1,38 @@
 {
   "name": "cn-lab-programs-exam",
   "version": "0.1.0",
-  "description": "Interactive Computer Networks lab practicals menu for Python and Java.",
+  "description": "Offline-friendly, dependency-free Computer Networks practical exam menu for Python and Java.",
   "license": "MIT",
   "type": "commonjs",
   "bin": {
     "cn-lab-programs-exam": "bin/cn-lab-programs-exam.js",
     "cnlab": "bin/cn-lab-programs-exam.js"
   },
-  "files": ["bin/", "data/", "programs/", "README.md", "LICENSE"],
-  "scripts": {"test": "node test/smoke.js"},
-  "engines": {"node": ">=18"},
-  "keywords": ["computer-networks", "cn-lab", "practical-exam", "python", "java", "cli"],
+  "files": [
+    "bin/",
+    "data/",
+    "programs/",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node test/smoke.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "computer-networks",
+    "cn-lab",
+    "practical-exam",
+    "python",
+    "java",
+    "cli"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/shiva31rama-cell/CN-Lab-Programs-Exam.git"
   },
-  "homepage": "https://github.com/shiva31rama-cell/CN-Lab-Programs-Exam#readme"
+  "homepage": "https://github.com/shiva31rama-cell/CN-Lab-Programs-Exam#readme",
+  "preferGlobal": true
 }
