@@ -1,0 +1,130 @@
+{
+  "experiments": [
+    {
+      "number": 1, "title": "Study of Network Devices and LAN Setup", "kind": "guide",
+      "aim": "To study common networking devices and understand how computers are connected in a Local Area Network (LAN).",
+      "description": "A LAN connects computers and other devices within a limited area so they can communicate and share resources. Study the Network Interface Card (NIC), switch, router, legacy hub, wireless access point (WAP), Ethernet cables and connectors, servers, printers and firewalls. For a wired LAN, connect computers to a switch and connect the switch to a router when internet access is required. For a wireless LAN, configure the access point and connect wireless devices using the network name and password.",
+      "requirements": ["Computers with wired or wireless network interfaces", "Ethernet cables and switch for a wired setup", "Router or wireless access point when available"],
+      "algorithm": ["Identify the NIC in each computer and note that it provides a network interface and MAC address.", "Study how a switch connects devices in the same LAN using MAC addresses.", "Study how a router connects different networks and can provide DHCP addressing.", "Identify a hub, wireless access point, Ethernet cables and connectors.", "For a wired LAN, connect each computer to the switch and connect the switch to the router if required.", "Power on the devices and allow DHCP to assign IP addresses, or configure addresses as instructed by the lab.", "Test connectivity between permitted devices using ping."],
+      "notes": ["This is a hardware/network-configuration practical; it does not require a Python or Java source file.", "The supplied PDF includes a LAN diagram with computers and a printer connected through a switch/router, with both wired and Wi-Fi links."]
+    },
+    {
+      "number": 2, "title": "Data Link Layer Framing — Character Stuffing and Bit Stuffing", "kind": "code",
+      "aim": "To implement the data link layer framing methods character stuffing and bit stuffing.",
+      "description": "Character stuffing inserts an escape character before data characters that match the frame flag or escape character. The receiver removes the frame flags and reverses the escaping. Bit stuffing inserts a 0 after every five consecutive 1 bits so that the flag pattern is not confused with payload data. Destuffing removes the inserted 0 bits.",
+      "requirements": ["Python 3 or a Java JDK"],
+      "algorithm": ["Read a message, a one-character frame flag and a one-character escape symbol.", "For character stuffing, prefix each payload occurrence of the flag or escape symbol with the escape symbol, then add starting and ending flags.", "Destuff by checking frame boundaries and removing escape prefixes.", "Read a binary message for bit stuffing.", "After every five consecutive 1 bits, insert a 0 bit.", "Destuff by removing the inserted 0 after each group of five 1 bits."],
+      "sources": {"python":"programs/python/02_framing_methods.py","java":"programs/java/02_FramingMethods.java"}
+    },
+    {
+      "number": 3, "title": "Checksum", "kind": "code",
+      "aim": "To implement the checksum method for error detection in the data link layer.",
+      "description": "The sender divides binary data into fixed-size words of 8 or 16 bits. A short final word is padded with zeroes. The words are added using one's-complement addition with end-around carry. The one's complement of the final sum is the checksum. The receiver adds the data words and checksum; an all-1s result indicates that no error was detected.",
+      "requirements": ["Python 3 or a Java JDK"],
+      "algorithm": ["Read binary data and choose a block size of 8 or 16 bits.", "Split the data into blocks and pad the final block with zeroes if needed.", "Add all blocks using end-around carry.", "Complement the final sum to generate the checksum.", "At the receiver, add the padded data blocks and checksum using end-around carry.", "Report no error detected when the receiver sum is all 1s; otherwise report an error."],
+      "sources": {"python":"programs/python/03_checksum.py","java":"programs/java/03_Checksum.java"}
+    },
+    {
+      "number": 4, "title": "Hamming Code — Error Detection and Correction", "kind": "code",
+      "aim": "To generate a Hamming (7,4) code and detect and correct a single-bit error.",
+      "description": "The Hamming (7,4) code places four data bits at positions 3, 5, 6 and 7. Even-parity bits are placed at positions 1, 2 and 4. The three parity checks form a syndrome. A non-zero syndrome identifies the position of a single-bit error, which can then be corrected.",
+      "requirements": ["Python 3 or a Java JDK"],
+      "algorithm": ["Read exactly four data bits.", "Place data bits at positions 3, 5, 6 and 7.", "Calculate even-parity bits at positions 1, 2 and 4.", "Display the generated seven-bit codeword.", "Read a seven-bit received codeword.", "Calculate the three parity checks to form the syndrome.", "If the syndrome is non-zero, flip the bit at that position and display the recovered data bits."],
+      "sources": {"python":"programs/python/04_hamming_code.py","java":"programs/java/04_HammingCode.java"},
+      "notes": ["The supplied PDF demonstrates Hamming (7,4) generation for input 1010; this implementation also includes receiver-side single-bit correction as stated in the experiment title."]
+    },
+    {
+      "number": 5, "title": "CRC — CRC-12, CRC-16 and CRC-CCITT", "kind": "code",
+      "aim": "To implement Cyclic Redundancy Check (CRC) using a generator polynomial.",
+      "description": "CRC treats a binary message as a polynomial and performs modulo-2 division using XOR. The sender appends zeroes equal to the generator degree, divides by the generator, and appends the remainder to the original data. The receiver divides the codeword by the same generator; a zero remainder means no error was detected. The supplied practical accepts the generator polynomial as binary input, so this implementation keeps that interface rather than assuming one variant for each CRC name.",
+      "requirements": ["Python 3 or a Java JDK", "The exact binary generator polynomial specified by the lab instructor"],
+      "algorithm": ["Read binary data and generator polynomial.", "Validate binary input and ensure the generator starts and ends with 1.", "Append generator-length minus one zeroes to the data.", "Perform modulo-2 division using XOR and obtain the remainder.", "Append the remainder to the original data to form the codeword.", "Divide the received codeword by the same generator.", "Report no error detected when the receiver remainder is all zeroes."],
+      "sources": {"python":"programs/python/05_crc.py","java":"programs/java/05_CRC.java"},
+      "notes": ["CRC polynomial variants differ. Enter the exact generator bit string prescribed by your lecturer; do not substitute another polynomial just because its width looks similar."]
+    },
+    {
+      "number": 6, "title": "Sliding Window Protocol — Go-Back-N", "kind": "code",
+      "aim": "To implement the Go-Back-N sliding window protocol.",
+      "description": "Go-Back-N is a sliding-window ARQ protocol. The sender can transmit multiple frames up to the window size. A cumulative acknowledgement advances the sender window. When a timeout or loss is simulated, the sender retransmits the outstanding frames starting from the oldest unacknowledged frame.",
+      "requirements": ["Python 3 or a Java JDK"],
+      "algorithm": ["Read the frames and sender window size.", "Set the sender window base to the first unacknowledged frame.", "Transmit frames currently inside the window.", "Read the highest consecutively acknowledged frame number.", "Slide the window beyond acknowledged frames.", "If a timeout or loss is entered, retransmit from the current base.", "Repeat until all frames are acknowledged."],
+      "sources": {"python":"programs/python/06_go_back_n.py","java":"programs/java/06_GoBackN.java"},
+      "notes": ["Interactive classroom simulation; not a real network transport implementation."]
+    },
+    {
+      "number": 7, "title": "Sliding Window Protocol — Selective Repeat", "kind": "code",
+      "aim": "To implement the Selective Repeat sliding window protocol.",
+      "description": "Selective Repeat allows multiple frames in flight and acknowledges each frame independently. Only frames that have not been acknowledged are retransmitted. The sender window advances when the frame at its base has been acknowledged.",
+      "requirements": ["Python 3 or a Java JDK"],
+      "algorithm": ["Read the frames and window size.", "Maintain a separate acknowledgement status for every frame.", "Display and transmit unacknowledged frames inside the current window.", "Read sequence numbers acknowledged successfully in this round.", "Mark only valid frames in the current window as acknowledged.", "Slide the window past consecutive acknowledged frames at its base.", "Repeat until every frame is acknowledged."],
+      "sources": {"python":"programs/python/07_selective_repeat.py","java":"programs/java/07_SelectiveRepeat.java"},
+      "notes": ["Interactive classroom simulation; it demonstrates independent acknowledgements and retransmission, but does not model real timers or sockets."]
+    },
+    {
+      "number": 8, "title": "Stop-and-Wait Protocol", "kind": "code",
+      "aim": "To implement the Stop-and-Wait protocol.",
+      "description": "Stop-and-Wait sends one frame and waits for its acknowledgement before sending the next frame. If an acknowledgement is not received, the sender retransmits the same frame.",
+      "requirements": ["Python 3 or a Java JDK"],
+      "algorithm": ["Read the list of frames.", "Send the current frame.", "Ask whether its acknowledgement was received.", "If yes, move to the next frame.", "If no, retransmit the same frame.", "Continue until all frames are acknowledged."],
+      "sources": {"python":"programs/python/08_stop_and_wait.py","java":"programs/java/08_StopAndWait.java"}
+    },
+    {
+      "number": 9, "title": "Congestion Control — Leaky Bucket Algorithm", "kind": "code",
+      "aim": "To implement the Leaky Bucket algorithm for congestion control.",
+      "description": "The Leaky Bucket algorithm models a finite buffer that releases packets at a steady rate. Incoming packets are added to the bucket. Packets that exceed bucket capacity are dropped, while up to the leak rate are transmitted during each time step.",
+      "requirements": ["Python 3 or a Java JDK"],
+      "algorithm": ["Read incoming packet counts, bucket capacity and leak rate.", "Add incoming packets to the current bucket.", "If the bucket exceeds capacity, drop the excess packets.", "Transmit up to the leak-rate number of packets.", "Subtract transmitted packets from the bucket.", "Display incoming, remaining, sent and dropped packet counts for each time step."],
+      "sources": {"python":"programs/python/09_leaky_bucket.py","java":"programs/java/09_LeakyBucket.java"}
+    },
+    {
+      "number": 10, "title": "Dijkstra's Shortest Path Algorithm", "kind": "code",
+      "aim": "To implement Dijkstra's algorithm to compute the shortest path through a weighted graph.",
+      "description": "Dijkstra's algorithm finds shortest paths from a source vertex in a graph with non-negative edge weights. It repeatedly selects the unvisited vertex with the smallest known distance and relaxes its outgoing edges. A parent array reconstructs the path to the destination.",
+      "requirements": ["Python 3 or a Java JDK"],
+      "algorithm": ["Read the number of vertices, vertex names and weighted adjacency matrix.", "Use 0 to represent no edge between different vertices.", "Initialize all distances to infinity except the source distance, which is zero.", "Select the unvisited vertex with the smallest tentative distance.", "Update distances and parent vertices of its unvisited neighbours.", "Repeat until reachable vertices are visited or no reachable unvisited vertex remains.", "Display the shortest path and total cost, or report that the destination is unreachable."],
+      "sources": {"python":"programs/python/10_dijkstra.py","java":"programs/java/10_Dijkstra.java"},
+      "notes": ["Dijkstra's algorithm requires non-negative edge weights."]
+    },
+    {
+      "number": 11, "title": "Distance Vector Routing", "kind": "code",
+      "aim": "To implement Distance Vector routing and obtain the routing table at each node.",
+      "description": "Each node maintains a distance to every destination. Nodes exchange distance information with neighbours and update routes using the Bellman-Ford relation: the cost to a destination through a neighbour is the link cost to that neighbour plus the neighbour's advertised distance. Updates continue until the tables converge.",
+      "requirements": ["Python 3 or a Java JDK"],
+      "algorithm": ["Read node names and the link-cost adjacency matrix.", "Initialize each node's distance vector from its directly connected links.", "Initialize next hops for directly connected destinations.", "Exchange the latest distance vectors between nodes.", "For every source, destination and neighbour, test whether routing through that neighbour gives a lower cost.", "Update distance and next hop when a shorter route is found.", "Repeat until no routing table changes, then display each node's routing table."],
+      "sources": {"python":"programs/python/11_distance_vector.py","java":"programs/java/11_DistanceVector.java"}
+    },
+    {
+      "number": 12, "title": "Broadcast Tree Using a Subnet of Hosts", "kind": "code",
+      "aim": "To implement a broadcast tree for a subnet of hosts using the supplied weighted graph.",
+      "description": "The supplied practical uses Prim's minimum-spanning-tree algorithm to select connecting edges for the subnet. Starting from one host, it repeatedly chooses the lowest-cost edge that connects a selected host to an unselected host. The selected edges form a broadcast tree for a connected graph.",
+      "requirements": ["Python 3 or a Java JDK"],
+      "algorithm": ["Read the number of hosts and weighted adjacency matrix.", "Start with the first host selected.", "Find the minimum-weight edge from a selected host to an unselected host.", "Add that edge and its new host to the tree.", "Repeat until all hosts are selected or no connecting edge remains.", "Display the selected tree edges and total weight."],
+      "sources": {"python":"programs/python/12_broadcast_tree.py","java":"programs/java/12_BroadcastTree.java"},
+      "notes": ["The official PDF uses Prim's algorithm and a four-host weighted adjacency matrix."]
+    },
+    {
+      "number": 13, "title": "Packet Capture and Analysis Using Wireshark", "kind": "guide",
+      "aim": "To capture network packets using Wireshark and analyse captured traffic using filters and statistics.",
+      "description": "This is a Wireshark application practical rather than a Python or Java algorithm. Install Wireshark, select an active network interface, start a capture, inspect packet details and apply display filters. The supplied PDF shows filters such as tcp, http and ip.addr == 192.168.1.5. Statistics can show Protocol Hierarchy, Conversations and Endpoints. Save the capture as a .pcapng file and stop the capture.",
+      "requirements": ["Wireshark installed", "Permission to capture traffic on the selected computer/network interface"],
+      "algorithm": ["On Ubuntu, run sudo apt update.", "Install Wireshark using sudo apt install wireshark.", "Follow the installation permission prompt for non-superuser packet capture.", "If required, add your user to the wireshark group with sudo usermod -aG wireshark $USER, then log out and back in.", "Start Wireshark and select the active interface such as eth0 or wlan0.", "Start capture and inspect the No., Time, Source, Destination, Protocol, Length and Info columns.", "Try display filters such as tcp, http or ip.addr == 192.168.1.5.", "Open Statistics and inspect Protocol Hierarchy, Conversations and Endpoints.", "Save the capture as a .pcapng file and stop the capture."],
+      "notes": ["Capture only traffic you are permitted to inspect.", "The supplied PDF screenshots show live packet rows, the display-filter field, Statistics options and saving a capture."]
+    },
+    {
+      "number": 14, "title": "Network Discovery and Port Scanning Using Nmap", "kind": "guide",
+      "aim": "To perform a basic Nmap scan and identify open ports and associated services on an authorized target.",
+      "description": "Nmap is an external network utility, not a Python or Java program in this practical. Install Nmap, identify a computer you own or are explicitly permitted to test, and run a basic scan against that target. The optional -sV flag requests service/version detection. Results show port number, state and service.",
+      "requirements": ["Nmap installed", "An IP address or hostname of a computer you own or are explicitly permitted to scan"],
+      "algorithm": ["On Ubuntu, run sudo apt update.", "Install Nmap using sudo apt install nmap.", "Identify the target and confirm that you are authorized to scan it.", "Run nmap TARGET for a basic scan.", "Optionally run nmap -sV TARGET for service and version information.", "Read the PORT, STATE and SERVICE columns in the output."],
+      "notes": ["Only scan your own computer, your own lab network or a target for which you have explicit permission.", "The sample services in the supplied PDF include SSH on port 22, HTTP on port 80 and HTTPS on port 443."]
+    },
+    {
+      "number": 15, "title": "Operating System Detection Using Nmap", "kind": "guide",
+      "aim": "To identify the operating system of a target computer using Nmap in Ubuntu.",
+      "description": "This is an external-tool practical. Nmap's -O option enables operating-system detection. The supplied experiment asks students to check Nmap, identify their computer's IP address and first test the local loopback address 127.0.0.1. OS detection may require elevated privileges and may not identify every system accurately.",
+      "requirements": ["Ubuntu or Windows", "Nmap installed", "Permission to scan the target computer"],
+      "algorithm": ["Open the terminal.", "Check Nmap using nmap --version.", "On Ubuntu, install it if required using sudo apt update and sudo apt install nmap.", "Identify the active computer's IP address using ip addr on Ubuntu.", "For a first local test, run sudo nmap -O 127.0.0.1.", "Read the output and note that -O is a capital letter O.", "On Windows, install Nmap using its official installer or Windows Package Manager if available, then verify with nmap --version."],
+      "notes": ["Only scan a computer you own or have explicit permission to test.", "The supplied PDF describes Ubuntu and mentions Windows installation."]
+    }
+  ]
+}
