@@ -190,6 +190,14 @@ async function main() {
     return;
   }
 
+  if (process.argv.includes('--list')) {
+    console.log('COMPUTER NETWORKS LAB — EXPERIMENTS');
+    for (const item of catalog) {
+      console.log(String(item.number).padStart(2, ' ') + '. ' + item.title);
+    }
+    return;
+  }
+
   banner();
   console.log('Select a language and experiment. Then view its description, algorithm, code or run it.');
   console.log('Tool-based practicals display their actual procedure instead of fake Python/Java code.');
